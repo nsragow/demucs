@@ -1,4 +1,4 @@
-name: demucs
+name: noah-branch-demucs
 
 channels:
   - pytorch
