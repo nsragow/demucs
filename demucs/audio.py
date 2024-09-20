@@ -13,6 +13,7 @@ import numpy as np
 import torch
 import torchaudio as ta
 import typing as tp
+import io
 
 from .utils import temp_filenames
 
@@ -246,6 +247,8 @@ def save_audio(wav: torch.Tensor,
     will save as mp3 with the given `bitrate`. Use `preset` to set mp3 quality:
     2 for highest quality, 7 for fastest speed
     """
+    buffer = io.BytesIO()
+
     wav = prevent_clip(wav, mode=clip)
     path = Path(path)
     suffix = path.suffix.lower()
@@ -257,8 +260,12 @@ def save_audio(wav: torch.Tensor,
             encoding = 'PCM_F'
         else:
             encoding = 'PCM_S'
-        ta.save(str(path), wav, sample_rate=samplerate,
-                encoding=encoding, bits_per_sample=bits_per_sample)
+        ta.save(buffer, wav, sample_rate=samplerate,
+                encoding=encoding, bits_per_sample=bits_per_sample, format="wav")
+        print("saved to buffer")
+        with open("outputcustom.wav", "wb") as f:
+            f.write(wav_bytes)
+        print("saved to file")
     elif suffix == ".flac":
         ta.save(str(path), wav, sample_rate=samplerate, bits_per_sample=bits_per_sample)
     else:

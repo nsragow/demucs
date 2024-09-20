@@ -113,6 +113,7 @@ def main(opts=None):
         print("error: the following arguments are required: tracks", file=sys.stderr)
         sys.exit(1)
 
+    print(args)
     try:
         separator = Separator(model=args.name,
                               repo=args.repo,

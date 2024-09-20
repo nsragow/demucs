@@ -265,7 +265,7 @@ class Separator:
         if sr is not None and sr != self.samplerate:
             wav = convert_audio(wav, sr, self._samplerate, self._audio_channels)
         ref = wav.mean(0)
-        wav -= ref.mean()
+        wav = wav.clone() - ref.mean()
         wav /= ref.std() + 1e-8
         out = apply_model(
                 self._model,
